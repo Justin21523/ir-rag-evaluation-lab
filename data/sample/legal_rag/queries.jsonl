@@ -1,0 +1,16 @@
+{"query_id": "legal_rag_q_001", "query": "legal citation evidence query 1", "relevant_doc_ids": ["legal_rag_doc_001", "legal_rag_doc_002"], "metadata": {"source": "generated_sample", "category": "legal"}}
+{"query_id": "legal_rag_q_002", "query": "legal latency evidence query 2", "relevant_doc_ids": ["legal_rag_doc_004", "legal_rag_doc_005"], "metadata": {"source": "generated_sample", "category": "legal"}}
+{"query_id": "legal_rag_q_003", "query": "legal metadata evidence query 3", "relevant_doc_ids": ["legal_rag_doc_007", "legal_rag_doc_008"], "metadata": {"source": "generated_sample", "category": "legal"}}
+{"query_id": "legal_rag_q_004", "query": "legal retrieval evidence query 4", "relevant_doc_ids": ["legal_rag_doc_010", "legal_rag_doc_011"], "metadata": {"source": "generated_sample", "category": "legal"}}
+{"query_id": "legal_rag_q_005", "query": "legal ranking evidence query 5", "relevant_doc_ids": ["legal_rag_doc_013", "legal_rag_doc_014"], "metadata": {"source": "generated_sample", "category": "legal"}}
+{"query_id": "legal_rag_q_006", "query": "legal citation evidence query 6", "relevant_doc_ids": ["legal_rag_doc_016", "legal_rag_doc_017"], "metadata": {"source": "generated_sample", "category": "legal"}}
+{"query_id": "legal_rag_q_007", "query": "legal latency evidence query 7", "relevant_doc_ids": ["legal_rag_doc_019", "legal_rag_doc_020"], "metadata": {"source": "generated_sample", "category": "legal"}}
+{"query_id": "legal_rag_q_008", "query": "legal metadata evidence query 8", "relevant_doc_ids": ["legal_rag_doc_022", "legal_rag_doc_023"], "metadata": {"source": "generated_sample", "category": "legal"}}
+{"query_id": "legal_rag_q_009", "query": "legal retrieval evidence query 9", "relevant_doc_ids": ["legal_rag_doc_025", "legal_rag_doc_026"], "metadata": {"source": "generated_sample", "category": "legal"}}
+{"query_id": "legal_rag_q_010", "query": "legal ranking evidence query 10", "relevant_doc_ids": ["legal_rag_doc_028", "legal_rag_doc_029"], "metadata": {"source": "generated_sample", "category": "legal"}}
+{"query_id": "legal_rag_q_011", "query": "legal citation evidence query 11", "relevant_doc_ids": ["legal_rag_doc_031", "legal_rag_doc_032"], "metadata": {"source": "generated_sample", "category": "legal"}}
+{"query_id": "legal_rag_q_012", "query": "legal latency evidence query 12", "relevant_doc_ids": ["legal_rag_doc_034", "legal_rag_doc_035"], "metadata": {"source": "generated_sample", "category": "legal"}}
+{"query_id": "legal_rag_q_013", "query": "legal metadata evidence query 13", "relevant_doc_ids": ["legal_rag_doc_037", "legal_rag_doc_038"], "metadata": {"source": "generated_sample", "category": "legal"}}
+{"query_id": "legal_rag_q_014", "query": "legal retrieval evidence query 14", "relevant_doc_ids": ["legal_rag_doc_040", "legal_rag_doc_041"], "metadata": {"source": "generated_sample", "category": "legal"}}
+{"query_id": "legal_rag_q_015", "query": "legal ranking evidence query 15", "relevant_doc_ids": ["legal_rag_doc_043", "legal_rag_doc_044"], "metadata": {"source": "generated_sample", "category": "legal"}}
+{"query_id": "legal_rag_q_016", "query": "legal citation evidence query 16", "relevant_doc_ids": ["legal_rag_doc_046", "legal_rag_doc_047"], "metadata": {"source": "generated_sample", "category": "legal"}}

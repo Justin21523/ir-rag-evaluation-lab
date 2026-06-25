@@ -1,0 +1,5 @@
+{"query_id": "q_001", "query": "why use BM25 baseline", "relevant_doc_ids": ["doc_001"]}
+{"query_id": "q_002", "query": "hybrid alpha dense bm25 score", "relevant_doc_ids": ["doc_003"]}
+{"query_id": "q_003", "query": "rag citation coverage unsupported claims", "relevant_doc_ids": ["doc_004"]}
+{"query_id": "q_004", "query": "OpenAlex scholarly metadata fields", "relevant_doc_ids": ["doc_005"]}
+{"query_id": "q_005", "query": "legal rag faithful citations", "relevant_doc_ids": ["doc_006", "doc_004"]}

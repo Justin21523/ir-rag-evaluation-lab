@@ -1,0 +1,19 @@
+services:
+  api:
+    image: python:3.12-slim
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: sh -c "pip install -e 'backend[dev]' && uvicorn ir_rag_eval.api.main:app --app-dir backend/src --host 0.0.0.0 --port 8000"
+    ports:
+      - "8000:8000"
+  frontend:
+    image: node:22-slim
+    working_dir: /app/frontend
+    volumes:
+      - .:/app
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api

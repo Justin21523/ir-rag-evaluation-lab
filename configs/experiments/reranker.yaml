@@ -1,0 +1,5 @@
+name: reranker_interface
+retriever: rerank
+base_retriever: hybrid
+cross_encoder_adapter: placeholder
+k_values: [1, 3, 5, 10]

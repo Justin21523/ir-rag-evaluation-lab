@@ -1,0 +1,4 @@
+name: bm25_baseline
+retriever: bm25
+k_values: [1, 3, 5, 10]
+description: Deterministic lexical retrieval baseline.

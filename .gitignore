@@ -12,4 +12,7 @@ data/*.duckdb.wal
 data/raw/
 data/processed/
 data/reports/
+data/uploads/
 .env
+docs/demo/playwright-artifacts/
+docs/demo/playwright-report/

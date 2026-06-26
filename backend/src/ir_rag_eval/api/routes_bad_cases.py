@@ -22,7 +22,15 @@ def list_bad_cases(experiment_id: str | None = None, case_type: str | None = Non
         params.append(case_type)
     where = f"WHERE {' AND '.join(clauses)}" if clauses else ""
     with connect() as con:
-        rows = con.execute(f"SELECT * FROM bad_cases {where} ORDER BY query_id", params).fetchall()
+        rows = con.execute(
+            f"""
+            SELECT case_id, experiment_id, query_id, case_type, description, expected_doc_ids_json,
+                   retrieved_doc_ids_json, notes, reviewer_label, root_cause, severity, owner,
+                   review_status, llm_suggestion_json, llm_review_status, llm_updated_at, updated_at
+            FROM bad_cases {where} ORDER BY query_id
+            """,
+            params,
+        ).fetchall()
     return [
         {
             "case_id": row[0],
@@ -34,7 +42,14 @@ def list_bad_cases(experiment_id: str | None = None, case_type: str | None = Non
             "retrieved_doc_ids_json": row[6],
             "notes": row[7] or "",
             "reviewer_label": row[8] or "needs_review",
-            "updated_at": row[9],
+            "root_cause": row[9] or "unknown",
+            "severity": row[10] or "medium",
+            "owner": row[11] or "",
+            "review_status": row[12] or "open",
+            "llm_suggestion": row[13] or "",
+            "llm_review_status": row[14] or "",
+            "llm_updated_at": row[15],
+            "updated_at": row[16],
         }
         for row in rows
     ]
@@ -56,6 +71,11 @@ def export_bad_cases(experiment_id: str | None = None, case_type: str | None = N
             "retrieved_doc_ids_json",
             "notes",
             "reviewer_label",
+            "root_cause",
+            "severity",
+            "owner",
+            "review_status",
+            "llm_review_status",
         ],
     )
     writer.writeheader()
@@ -79,11 +99,20 @@ def update_bad_case(case_id: str, request: BadCaseUpdateRequest):
         row = con.execute("SELECT case_id FROM bad_cases WHERE case_id = ?", [case_id]).fetchone()
         if not row:
             raise HTTPException(status_code=404, detail="Bad case not found")
-        existing = con.execute("SELECT notes, reviewer_label FROM bad_cases WHERE case_id = ?", [case_id]).fetchone()
+        existing = con.execute("SELECT notes, reviewer_label, root_cause, severity, owner, review_status, llm_review_status FROM bad_cases WHERE case_id = ?", [case_id]).fetchone()
         notes = request.notes if request.notes is not None else existing[0]
         reviewer_label = request.reviewer_label if request.reviewer_label is not None else existing[1]
+        root_cause = request.root_cause if request.root_cause is not None else existing[2]
+        severity = request.severity if request.severity is not None else existing[3]
+        owner = request.owner if request.owner is not None else existing[4]
+        review_status = request.review_status if request.review_status is not None else existing[5]
+        llm_review_status = request.llm_review_status if request.llm_review_status is not None else existing[6]
         con.execute(
-            "UPDATE bad_cases SET notes = ?, reviewer_label = ?, updated_at = ? WHERE case_id = ?",
-            [notes, reviewer_label, datetime.now(UTC), case_id],
+            """
+            UPDATE bad_cases
+            SET notes = ?, reviewer_label = ?, root_cause = ?, severity = ?, owner = ?, review_status = ?, llm_review_status = ?, updated_at = ?
+            WHERE case_id = ?
+            """,
+            [notes, reviewer_label, root_cause, severity, owner, review_status, llm_review_status, datetime.now(UTC), case_id],
         )
     return get_bad_case(case_id)

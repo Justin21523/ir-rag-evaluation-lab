@@ -10,7 +10,7 @@ export function ExperimentRunsPage() {
   if (experiments.isLoading) return <LoadingState />;
   if (experiments.isError) return <ErrorState />;
   return (
-    <div className="grid gap-4">
+    <div data-tour-id="experiment-runs-panel" className="grid gap-4">
       <h2 className="text-xl font-semibold">{t('navigation.experimentRuns')}</h2>
       <div className="grid gap-3">
         {(experiments.data ?? []).map((experiment) => (

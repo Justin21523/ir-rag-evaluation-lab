@@ -8,7 +8,7 @@ export function DatasetSelector() {
   const datasets = useDatasets();
   const { datasetId, setDatasetId } = useDatasetSelection();
   return (
-    <label className="flex min-w-0 items-center gap-2 text-sm">
+    <label data-tour-id="dataset-selector" className="flex min-w-0 items-center gap-2 text-sm">
       <Database size={18} aria-hidden />
       <span className="sr-only">{t('datasets.selector')}</span>
       <select

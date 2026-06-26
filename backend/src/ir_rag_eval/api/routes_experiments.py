@@ -13,7 +13,7 @@ def list_experiments():
     with connect() as con:
         rows = con.execute(
             """
-            SELECT experiment_id, dataset_id, name, retriever_name, config_json, status, started_at, finished_at
+            SELECT experiment_id, dataset_id, suite_id, name, retriever_name, config_json, status, started_at, finished_at
             FROM experiments ORDER BY started_at DESC
             """
         ).fetchall()
@@ -21,12 +21,13 @@ def list_experiments():
         {
             "experiment_id": row[0],
             "dataset_id": row[1],
-            "name": row[2],
-            "retriever_name": row[3],
-            "config_json": row[4],
-            "status": row[5],
-            "started_at": row[6],
-            "finished_at": row[7],
+            "suite_id": row[2],
+            "name": row[3],
+            "retriever_name": row[4],
+            "config_json": row[5],
+            "status": row[6],
+            "started_at": row[7],
+            "finished_at": row[8],
         }
         for row in rows
     ]
@@ -54,7 +55,7 @@ def experiment(experiment_id: str):
     with connect() as con:
         row = con.execute(
             """
-            SELECT experiment_id, dataset_id, name, retriever_name, config_json, status, started_at, finished_at
+            SELECT experiment_id, dataset_id, suite_id, name, retriever_name, config_json, status, started_at, finished_at
             FROM experiments WHERE experiment_id = ?
             """,
             [experiment_id],
@@ -64,12 +65,13 @@ def experiment(experiment_id: str):
     return {
         "experiment_id": row[0],
         "dataset_id": row[1],
-        "name": row[2],
-        "retriever_name": row[3],
-        "config_json": row[4],
-        "status": row[5],
-        "started_at": row[6],
-        "finished_at": row[7],
+        "suite_id": row[2],
+        "name": row[3],
+        "retriever_name": row[4],
+        "config_json": row[5],
+        "status": row[6],
+        "started_at": row[7],
+        "finished_at": row[8],
     }
 
 

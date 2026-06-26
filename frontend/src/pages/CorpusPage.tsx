@@ -35,7 +35,7 @@ export function CorpusPage() {
         <div><p className="text-xs text-slate-500">{t('datasets.qrels')}</p><p className="font-medium">{overview.data?.qrels_count ?? 0}</p></div>
         <div className="md:col-span-3"><p className="text-xs text-slate-500">{t('datasets.sourcePath')}</p><p className="font-mono text-sm">{dataset?.source_path ?? '-'}</p></div>
       </section>
-      <section className="grid gap-4 lg:grid-cols-2">
+      <section data-tour-id="corpus-quality" className="grid gap-4 lg:grid-cols-2">
         <div className="rounded-lg border bg-white p-4">
           <h3 className="mb-3 font-semibold">{t('datasets.qualityChecks')}</h3>
           <div className="grid gap-2 text-sm">

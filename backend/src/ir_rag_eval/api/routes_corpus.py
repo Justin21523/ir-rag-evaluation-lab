@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
 from ir_rag_eval.api.deps import get_documents, get_queries
 from ir_rag_eval.api.schemas import DatasetIngestRequest
@@ -80,6 +80,59 @@ def create_sample():
         persist_corpus(con, docs, queries_, dataset_id=DEFAULT_DATASET_ID)
         register_default_dataset(con)
     return {"status": "created", "documents": len(docs), "queries": len(queries_)}
+
+
+@router.post("/upload")
+async def upload_custom_corpus(
+    dataset_id: str = Form(...),
+    name: str = Form(...),
+    documents_file: UploadFile = File(...),
+    queries_file: UploadFile = File(...),
+):
+    if not dataset_id.strip():
+        raise HTTPException(status_code=400, detail="dataset_id is required")
+    if not (documents_file.filename or "").endswith(".jsonl") or not (queries_file.filename or "").endswith(".jsonl"):
+        raise HTTPException(status_code=400, detail="documents_file and queries_file must be JSONL files")
+    upload_dir = settings.data_dir / "uploads" / dataset_id
+    upload_dir.mkdir(parents=True, exist_ok=True)
+    docs_path = upload_dir / "documents.jsonl"
+    queries_path = upload_dir / "queries.jsonl"
+    docs_path.write_bytes(await documents_file.read())
+    queries_path.write_bytes(await queries_file.read())
+    try:
+        docs = load_documents(docs_path)
+        queries_ = load_queries(queries_path)
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=f"Invalid JSONL corpus: {exc}") from exc
+    with connect() as con:
+        persist_corpus(con, docs, queries_, dataset_id=dataset_id)
+        con.execute(
+            """
+            INSERT OR REPLACE INTO datasets
+            (dataset_id, name, dataset_type, version, license, description, source_path,
+             document_count, query_count, qrels_count, metadata_json, created_at, updated_at)
+            VALUES (?, ?, 'custom', 'upload', 'user-provided', ?, ?, ?, ?, ?, '{}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+            """,
+            [
+                dataset_id,
+                name,
+                "Uploaded custom JSONL corpus",
+                str(upload_dir),
+                len(docs),
+                len(queries_),
+                sum(len(query.relevant_doc_ids) for query in queries_),
+            ],
+        )
+        refresh_dataset_counts(con, dataset_id)
+        quality = compute_quality_checks(con, dataset_id)
+    return {
+        "status": "uploaded",
+        "dataset_id": dataset_id,
+        "document_count": len(docs),
+        "query_count": len(queries_),
+        "qrels_count": sum(len(query.relevant_doc_ids) for query in queries_),
+        "quality_checks": quality,
+    }
 
 
 @router.get("/datasets")

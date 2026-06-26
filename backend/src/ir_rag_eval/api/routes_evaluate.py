@@ -28,6 +28,7 @@ def evaluate(request: EvaluateRequest):
             metrics=metrics,
             config=request.model_dump(),
             dataset_id=request.dataset_id,
+            suite_id=request.suite_id,
         )
         for detail in details:
             persist_search_run(

@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS search_results (
 CREATE TABLE IF NOT EXISTS experiments (
   experiment_id VARCHAR PRIMARY KEY,
   dataset_id VARCHAR DEFAULT 'sample_default',
+  suite_id VARCHAR,
   name VARCHAR,
   retriever_name VARCHAR,
   config_json VARCHAR,
@@ -72,6 +73,17 @@ CREATE TABLE IF NOT EXISTS rag_answers (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS evaluation_suites (
+  suite_id VARCHAR PRIMARY KEY,
+  dataset_id VARCHAR DEFAULT 'sample_default',
+  name VARCHAR,
+  status VARCHAR,
+  config_json VARCHAR,
+  started_at TIMESTAMP,
+  finished_at TIMESTAMP,
+  summary_json VARCHAR
+);
+
 CREATE TABLE IF NOT EXISTS bad_cases (
   case_id VARCHAR PRIMARY KEY,
   experiment_id VARCHAR,
@@ -82,6 +94,13 @@ CREATE TABLE IF NOT EXISTS bad_cases (
   retrieved_doc_ids_json VARCHAR,
   notes VARCHAR,
   reviewer_label VARCHAR,
+  root_cause VARCHAR DEFAULT 'unknown',
+  severity VARCHAR DEFAULT 'medium',
+  owner VARCHAR,
+  review_status VARCHAR DEFAULT 'open',
+  llm_suggestion_json VARCHAR,
+  llm_review_status VARCHAR,
+  llm_updated_at TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -170,4 +189,138 @@ CREATE TABLE IF NOT EXISTS query_metrics (
   bad_case_type VARCHAR,
   difficulty_label VARCHAR,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS llm_runs (
+  run_id VARCHAR PRIMARY KEY,
+  dataset_id VARCHAR DEFAULT 'sample_default',
+  prompt_type VARCHAR,
+  provider VARCHAR,
+  model VARCHAR,
+  status VARCHAR,
+  latency_ms DOUBLE,
+  confidence DOUBLE,
+  input_summary VARCHAR,
+  output_summary VARCHAR,
+  request_json VARCHAR,
+  response_json VARCHAR,
+  error_json VARCHAR,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS llm_judgments (
+  judgment_id VARCHAR PRIMARY KEY,
+  run_id VARCHAR,
+  dataset_id VARCHAR DEFAULT 'sample_default',
+  target_type VARCHAR,
+  target_id VARCHAR,
+  judgment VARCHAR,
+  confidence DOUBLE,
+  rationale VARCHAR,
+  evidence_doc_ids_json VARCHAR,
+  review_status VARCHAR DEFAULT 'suggested',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS llm_rewrite_runs (
+  rewrite_id VARCHAR PRIMARY KEY,
+  run_id VARCHAR,
+  dataset_id VARCHAR DEFAULT 'sample_default',
+  query_id VARCHAR,
+  rewrite_kind VARCHAR,
+  rewrite_query VARCHAR,
+  baseline_recall DOUBLE,
+  rewrite_recall DOUBLE,
+  recall_delta DOUBLE,
+  baseline_ndcg DOUBLE,
+  rewrite_ndcg DOUBLE,
+  ndcg_delta DOUBLE,
+  rank_delta DOUBLE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS text_mining_runs (
+  run_id VARCHAR PRIMARY KEY,
+  dataset_id VARCHAR DEFAULT 'sample_default',
+  config_json VARCHAR,
+  status VARCHAR,
+  document_count INTEGER,
+  term_count INTEGER,
+  edge_count INTEGER,
+  rule_count INTEGER,
+  started_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  finished_at TIMESTAMP,
+  summary_json VARCHAR
+);
+
+CREATE TABLE IF NOT EXISTS text_terms (
+  run_id VARCHAR,
+  dataset_id VARCHAR DEFAULT 'sample_default',
+  term VARCHAR,
+  doc_count INTEGER,
+  term_count INTEGER,
+  tfidf DOUBLE,
+  community_id INTEGER,
+  centrality DOUBLE
+);
+
+CREATE TABLE IF NOT EXISTS text_cooccurrences (
+  run_id VARCHAR,
+  dataset_id VARCHAR DEFAULT 'sample_default',
+  source_term VARCHAR,
+  target_term VARCHAR,
+  weight DOUBLE,
+  pmi DOUBLE,
+  jaccard DOUBLE
+);
+
+CREATE TABLE IF NOT EXISTS text_collocations (
+  run_id VARCHAR,
+  dataset_id VARCHAR DEFAULT 'sample_default',
+  phrase VARCHAR,
+  n INTEGER,
+  count INTEGER,
+  pmi DOUBLE,
+  score DOUBLE
+);
+
+CREATE TABLE IF NOT EXISTS text_network_nodes (
+  run_id VARCHAR,
+  dataset_id VARCHAR DEFAULT 'sample_default',
+  node_id VARCHAR,
+  label VARCHAR,
+  value DOUBLE,
+  degree DOUBLE,
+  weighted_degree DOUBLE,
+  pagerank DOUBLE,
+  community_id INTEGER
+);
+
+CREATE TABLE IF NOT EXISTS text_network_edges (
+  run_id VARCHAR,
+  dataset_id VARCHAR DEFAULT 'sample_default',
+  source VARCHAR,
+  target VARCHAR,
+  weight DOUBLE,
+  pmi DOUBLE
+);
+
+CREATE TABLE IF NOT EXISTS text_association_rules (
+  run_id VARCHAR,
+  dataset_id VARCHAR DEFAULT 'sample_default',
+  antecedent_json VARCHAR,
+  consequent_json VARCHAR,
+  support DOUBLE,
+  confidence DOUBLE,
+  lift DOUBLE,
+  conviction DOUBLE
+);
+
+CREATE TABLE IF NOT EXISTS text_mining_sankey_links (
+  run_id VARCHAR,
+  dataset_id VARCHAR DEFAULT 'sample_default',
+  source VARCHAR,
+  target VARCHAR,
+  value DOUBLE,
+  stage VARCHAR
 );

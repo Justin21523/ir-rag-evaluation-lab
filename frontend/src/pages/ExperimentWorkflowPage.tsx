@@ -33,7 +33,7 @@ export function ExperimentWorkflowPage() {
   return (
     <div className="grid gap-4">
       <h2 className="text-xl font-semibold">{t('workflow.title')}</h2>
-      <section className="grid gap-4 rounded-lg border bg-white p-4 lg:grid-cols-3">
+      <section data-tour-id="workflow-config" className="grid gap-4 rounded-lg border bg-white p-4 lg:grid-cols-3">
         <div>
           <p className="text-xs uppercase text-slate-500">{t('workflow.selectDataset')}</p>
           <p className="mt-2 font-mono text-sm">{datasetId}</p>

@@ -41,7 +41,7 @@ export function RetrievalComparisonPage() {
           </button>
         ))}
       </div>
-      <section className="rounded-lg border bg-white p-4">
+      <section data-tour-id="retrieval-comparison-panel" className="rounded-lg border bg-white p-4">
         <h3 className="mb-3 font-semibold">{t('navigation.experimentRuns')}</h3>
         <div className="grid gap-2 md:grid-cols-2">
           {(experiments.data ?? []).map((experiment) => (

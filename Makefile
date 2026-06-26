@@ -5,7 +5,7 @@ PIP := $(VENV)/bin/pip
 VERSION ?= local
 LICENSE ?= unknown
 
-.PHONY: install install-backend install-frontend sample-data index evaluate report load-beir load-msmarco load-openalex api frontend dev test test-backend test-frontend docker-up docker-down
+.PHONY: install install-backend install-frontend sample-data index evaluate report refresh-lab llm-evaluate text-mining load-beir load-msmarco load-openalex api frontend dev test test-backend test-frontend docker-up docker-down
 
 install: install-backend install-frontend
 
@@ -29,6 +29,15 @@ evaluate:
 
 report:
 	$(PY) -m ir_rag_eval.cli report $(if $(DATASET_ID),--dataset-id $(DATASET_ID),)
+
+refresh-lab:
+	$(PY) -m ir_rag_eval.cli refresh-lab
+
+llm-evaluate:
+	$(PY) -m ir_rag_eval.cli llm-evaluate $(if $(DATASET_ID),--dataset-id $(DATASET_ID),) $(if $(SUITE_ID),--suite-id $(SUITE_ID),) $(if $(LIMIT_QUERIES),--limit-queries $(LIMIT_QUERIES),)
+
+text-mining:
+	$(PY) -m ir_rag_eval.cli text-mining $(if $(DATASET_ID),--dataset-id $(DATASET_ID),) $(if $(MAX_TERMS),--max-terms $(MAX_TERMS),) $(if $(MAX_EDGES),--max-edges $(MAX_EDGES),) $(if $(LIMIT_DOCS),--limit-docs $(LIMIT_DOCS),)
 
 evaluate-batch:
 	curl -s -X POST http://127.0.0.1:8300/api/v1/experiments/run-batch \

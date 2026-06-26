@@ -7,6 +7,10 @@ export function useExperiments() {
   return useQuery({ queryKey: ['experiments'], queryFn: irApi.experiments });
 }
 
+export function useEvaluationSuites(datasetId?: string) {
+  return useQuery({ queryKey: ['evaluation-suites', datasetId], queryFn: () => irApi.evaluationSuites(datasetId) });
+}
+
 export function useEvaluate() {
   return useMutation({ mutationFn: (mode: RetrievalMode) => irApi.evaluate(mode, getSelectedDataset()) });
 }

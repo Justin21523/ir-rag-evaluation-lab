@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 
 const KEY = 'ir-rag-dataset-id';
+const DEFAULT_DATASET_ID = 'sample_ir_demo_100';
 
 export function getSelectedDataset() {
-  return localStorage.getItem(KEY) || 'sample_default';
+  return localStorage.getItem(KEY) || DEFAULT_DATASET_ID;
 }
 
 export function setSelectedDataset(datasetId: string) {

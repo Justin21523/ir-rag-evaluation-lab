@@ -1,14 +1,17 @@
 import { NavLink } from 'react-router-dom';
-import { BarChart3, BookOpen, Bug, FileSearch, FlaskConical, Gauge, Home, Quote, Workflow } from 'lucide-react';
+import { BarChart3, BookOpen, BrainCircuit, Bug, FileSearch, FlaskConical, Gauge, Home, Map, Network, Quote, Workflow } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const items = [
   ['/', 'navigation.overview', Home],
+  ['/journey', 'navigation.journey', Map],
   ['/corpus', 'navigation.corpus', BookOpen],
   ['/query-evaluator', 'navigation.queryEvaluator', FileSearch],
   ['/experiment-workflow', 'workflow.title', Workflow],
   ['/retrieval-comparison', 'navigation.retrievalComparison', BarChart3],
   ['/analytics', 'navigation.analytics', BarChart3],
+  ['/text-mining', 'navigation.textMining', Network],
+  ['/llm-evaluation', 'navigation.llmEvaluation', BrainCircuit],
   ['/rag-citation-checker', 'navigation.ragCitationChecker', Quote],
   ['/bad-cases', 'navigation.badCases', Bug],
   ['/experiment-runs', 'navigation.experimentRuns', FlaskConical],

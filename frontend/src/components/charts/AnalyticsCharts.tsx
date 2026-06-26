@@ -90,6 +90,51 @@ export function LatencyRecallScatter({ data }: { data: Array<{ retriever_name: s
   );
 }
 
+export function QueryScatterChart({
+  title,
+  data,
+  xKey,
+  yKey,
+  xLabel,
+  yLabel,
+  onQueryClick,
+}: {
+  title: string;
+  data: Array<Record<string, string | number>>;
+  xKey: string;
+  yKey: string;
+  xLabel: string;
+  yLabel: string;
+  onQueryClick?: (queryId: string) => void;
+}) {
+  const groups = Array.from(new Set(data.map((point) => String(point.retriever_name ?? 'dataset'))));
+  return (
+    <ChartFrame title={title}>
+      <ResponsiveContainer width="100%" height="100%">
+        <ScatterChart>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey={xKey} name={xLabel} />
+          <YAxis dataKey={yKey} name={yLabel} />
+          <Tooltip cursor={{ strokeDasharray: '3 3' }} />
+          <Legend />
+          {groups.map((name, idx) => (
+            <Scatter
+              key={name}
+              name={name}
+              data={data.filter((point) => String(point.retriever_name ?? 'dataset') === name)}
+              fill={palette[idx % palette.length]}
+              onClick={(point) => {
+                const queryId = (point as { query_id?: string }).query_id;
+                if (queryId) onQueryClick?.(queryId);
+              }}
+            />
+          ))}
+        </ScatterChart>
+      </ResponsiveContainer>
+    </ChartFrame>
+  );
+}
+
 export function DistributionBarChart({ title, data, xKey, yKey }: { title: string; data: Array<Record<string, string | number>>; xKey: string; yKey: string }) {
   return (
     <ChartFrame title={title}>

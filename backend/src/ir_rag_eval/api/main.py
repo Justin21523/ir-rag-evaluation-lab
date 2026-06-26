@@ -6,11 +6,14 @@ from ir_rag_eval.api import (
     routes_bad_cases,
     routes_corpus,
     routes_evaluate,
+    routes_evaluation_suites,
     routes_experiments,
     routes_health,
     routes_jobs,
+    routes_llm,
     routes_rag,
     routes_search,
+    routes_text_mining,
 )
 from ir_rag_eval.config import settings
 from ir_rag_eval.logging_config import configure_logging
@@ -28,10 +31,13 @@ app.add_middleware(
 
 app.include_router(routes_health.router, prefix=settings.api_prefix)
 app.include_router(routes_jobs.router, prefix=settings.api_prefix)
+app.include_router(routes_llm.router, prefix=settings.api_prefix)
 app.include_router(routes_analytics.router, prefix=settings.api_prefix)
+app.include_router(routes_text_mining.router, prefix=settings.api_prefix)
 app.include_router(routes_corpus.router, prefix=settings.api_prefix)
 app.include_router(routes_search.router, prefix=settings.api_prefix)
 app.include_router(routes_evaluate.router, prefix=settings.api_prefix)
+app.include_router(routes_evaluation_suites.router, prefix=settings.api_prefix)
 app.include_router(routes_experiments.router, prefix=settings.api_prefix)
 app.include_router(routes_bad_cases.router, prefix=settings.api_prefix)
 app.include_router(routes_rag.router, prefix=settings.api_prefix)
